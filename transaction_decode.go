@@ -5,10 +5,7 @@ import (
 	"errors"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	"math/big"
 )
-
-var big8 = big.NewInt(8)
 
 func DecodeRawTransactionBytes(bs []byte) (*types.Transaction, *common.Address, error) {
 	tx := new(types.Transaction)
