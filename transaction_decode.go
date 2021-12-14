@@ -3,29 +3,55 @@ package eth_decode_lib
 import (
 	"encoding/hex"
 	"errors"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
+	"math/big"
 )
 
-func DecodeRawTransactionBytes(bs []byte) (*types.Transaction, error) {
+var big8 = big.NewInt(8)
+
+func DecodeRawTransactionBytes(bs []byte) (*types.Transaction, *common.Address, error) {
 	tx := new(types.Transaction)
 	err := tx.UnmarshalBinary(bs)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return tx, nil
+
+	v, r, s := tx.RawSignatureValues()
+	if v == nil || r == nil || s == nil {
+		return tx, nil, nil
+	} else {
+		var signer types.Signer
+
+		if tx.Type() == 0 {
+			// eip155Signer
+			signer = types.NewEIP155Signer(tx.ChainId())
+		} else if tx.Type() == 2 {
+			// londonSigner
+			signer = types.NewLondonSigner(tx.ChainId())
+		} else {
+			return nil, nil, errors.New("invalid transaction type")
+		}
+
+		addr, err := signer.Sender(tx)
+		if err != nil {
+			return nil, nil, err
+		}
+		return tx, &addr, nil
+	}
 }
 
-func DecodeRawTransactionHex(hexstr string) (*types.Transaction, error) {
-	if len(hexstr)%2 != 0 {
-		return nil, errors.New("invalid raw transaction hex")
+func DecodeRawTransactionHex(hexStr string) (*types.Transaction, *common.Address, error) {
+	if len(hexStr)%2 != 0 {
+		return nil, nil, errors.New("invalid raw transaction hex")
 	}
-	if len(hexstr) >= 2 && hexstr[0:2] == "0x" {
-		hexstr = hexstr[2:]
+	if len(hexStr) >= 2 && hexStr[0:2] == "0x" {
+		hexStr = hexStr[2:]
 	}
 
-	bs, err := hex.DecodeString(hexstr)
+	bs, err := hex.DecodeString(hexStr)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	return DecodeRawTransactionBytes(bs)
 }

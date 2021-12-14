@@ -16,7 +16,7 @@ func TestDecodeRawTransactionBytesEIP1559(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
-	tx, err := DecodeRawTransactionBytes(txBytes)
+	tx, addr, err := DecodeRawTransactionBytes(txBytes)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -29,11 +29,14 @@ func TestDecodeRawTransactionBytesEIP1559(t *testing.T) {
 	fmt.Println("tx nonce:", tx.Nonce())
 	fmt.Println("tx value:", tx.Value())
 	fmt.Println("tx data:", hex.EncodeToString(tx.Data()))
+	if addr != nil {
+		fmt.Println("tx signer:", addr.String())
+	}
 }
 
 func TestDecodeRawTransactionHexEIP1559(t *testing.T) {
 	// 0xd4706062b4a0f167113ee3f03798841289d112e6e8ced9f4c4f1152e68c91c46
-	tx, err := DecodeRawTransactionHex(txEIP1559)
+	tx, addr, err := DecodeRawTransactionHex(txEIP1559)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -46,6 +49,9 @@ func TestDecodeRawTransactionHexEIP1559(t *testing.T) {
 	fmt.Println("tx nonce:", tx.Nonce())
 	fmt.Println("tx value:", tx.Value())
 	fmt.Println("tx data:", hex.EncodeToString(tx.Data()))
+	if addr != nil {
+		fmt.Println("tx signer:", addr.String())
+	}
 }
 
 func TestDecodeRawTransactionBytesEIP155(t *testing.T) {
@@ -55,7 +61,7 @@ func TestDecodeRawTransactionBytesEIP155(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
-	tx, err := DecodeRawTransactionBytes(txBytes)
+	tx, addr, err := DecodeRawTransactionBytes(txBytes)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -68,11 +74,14 @@ func TestDecodeRawTransactionBytesEIP155(t *testing.T) {
 	fmt.Println("tx nonce:", tx.Nonce())
 	fmt.Println("tx value:", tx.Value())
 	fmt.Println("tx data:", hex.EncodeToString(tx.Data()))
+	if addr != nil {
+		fmt.Println("tx signer:", addr.String())
+	}
 }
 
 func TestDecodeRawTransactionHexEIP155(t *testing.T) {
 	// 0x4c552aa8b23fdfe7f28e1d3b69dd161f7983e1a3e6707400d263f35fc2794141
-	tx, err := DecodeRawTransactionHex(txEIP155)
+	tx, addr, err := DecodeRawTransactionHex(txEIP155)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -85,4 +94,7 @@ func TestDecodeRawTransactionHexEIP155(t *testing.T) {
 	fmt.Println("tx nonce:", tx.Nonce())
 	fmt.Println("tx value:", tx.Value())
 	fmt.Println("tx data:", hex.EncodeToString(tx.Data()))
+	if addr != nil {
+		fmt.Println("tx signer:", addr.String())
+	}
 }
