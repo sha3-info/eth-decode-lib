@@ -6,22 +6,83 @@ import (
 	"testing"
 )
 
-func TestDecodeRawTransaction(t *testing.T) {
-	txBytes, err := hex.DecodeString("f8ad833532178512dbf3c4ea830f4240943301ee63fb29f863f2333bd4466acb46cd8323e680b844a9059cbb000000000000000000000000ca1caf2222eea0e046e0f653e647566d8d18df950000000000000000000000000000000000000000781f5e0015f15e2f6c7c000025a09c4acb6a0c938e2316cd8391699239ce319d4411e551a8aacf6c04ef1a3debbfa02e1ef233808769afb5d7cf21950d8af87a2fb91e406940529431444f927189e2")
+const txEIP1559 = "0x02f901930181ec8459682f008510de3558118303e13f947a250d5630b4cf539739df2c5dacb4c659f2488d80b9012438ed173900000000000000000000000000000000000000000000000000000001980fc5530000000000000000000000000000000000000000000001407024467bbd548d0f00000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000d538caee4b94706204d5e8ea3fe05cb70a77b52c0000000000000000000000000000000000000000000000000000000061b84fbf0000000000000000000000000000000000000000000000000000000000000003000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec7000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000afbf03181833ab4e8dec24d708a2a24c2baaa4a4c001a04b5e414fdb768af77d159f9b0d554d8c4b8ebe8fb07057cc6042fd80dac01032a00f58e9cba787fee2162810a196a199493ee662fba5ba8f9d2b47b26fae1fc589"
+const txEIP155 = "0xf8ad834521a0851279e9144b8305573094dac17f958d2ee523a2206206994597c13d831ec780b844a9059cbb000000000000000000000000a7d9dcecc8740732b6b1d8911d660cdc1677c436000000000000000000000000000000000000000000000000000000001e3c055026a00a1063f2bbc0ad421541bf71d88fca36eddcea49c08825cc0449514978fc540ea07e1708ce8daf372e10fc3630070d902e995e3a7eeda986c3755802447aed72f9"
+
+func TestDecodeRawTransactionBytesEIP1559(t *testing.T) {
+	// 0xd4706062b4a0f167113ee3f03798841289d112e6e8ced9f4c4f1152e68c91c46
+	txBytes, err := hex.DecodeString(txEIP1559[2:])
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 	tx, err := DecodeRawTransactionBytes(txBytes)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
-	fmt.Println("tx:", *tx)
+	fmt.Println("chain id:", tx.ChainId())
+	fmt.Println("tx hash:", tx.Hash().String())
+	fmt.Println("tx gas price:", tx.GasPrice())
+	fmt.Println("tx gas limit:", tx.Gas())
+	fmt.Println("tx type:", tx.Type())
+	fmt.Println("tx nonce:", tx.Nonce())
+	fmt.Println("tx value:", tx.Value())
+	fmt.Println("tx data:", hex.EncodeToString(tx.Data()))
 }
 
-func TestDecodeRawTransactionHex(t *testing.T) {
-	tx, err := DecodeRawTransactionHex("0xf8ad833532178512dbf3c4ea830f4240943301ee63fb29f863f2333bd4466acb46cd8323e680b844a9059cbb000000000000000000000000ca1caf2222eea0e046e0f653e647566d8d18df950000000000000000000000000000000000000000781f5e0015f15e2f6c7c000025a09c4acb6a0c938e2316cd8391699239ce319d4411e551a8aacf6c04ef1a3debbfa02e1ef233808769afb5d7cf21950d8af87a2fb91e406940529431444f927189e2")
+func TestDecodeRawTransactionHexEIP1559(t *testing.T) {
+	// 0xd4706062b4a0f167113ee3f03798841289d112e6e8ced9f4c4f1152e68c91c46
+	tx, err := DecodeRawTransactionHex(txEIP1559)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
-	fmt.Println("tx:", *tx)
+	fmt.Println("chain id:", tx.ChainId())
+	fmt.Println("tx hash:", tx.Hash().String())
+	fmt.Println("tx gas price:", tx.GasPrice())
+	fmt.Println("tx gas limit:", tx.Gas())
+	fmt.Println("tx type:", tx.Type())
+	fmt.Println("tx nonce:", tx.Nonce())
+	fmt.Println("tx value:", tx.Value())
+	fmt.Println("tx data:", hex.EncodeToString(tx.Data()))
+}
+
+func TestDecodeRawTransactionBytesEIP155(t *testing.T) {
+	// 0x4c552aa8b23fdfe7f28e1d3b69dd161f7983e1a3e6707400d263f35fc2794141
+	txBytes, err := hex.DecodeString(txEIP155[2:])
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	tx, err := DecodeRawTransactionBytes(txBytes)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("chain id:", tx.ChainId())
+	fmt.Println("tx hash:", tx.Hash().String())
+	fmt.Println("tx gas price:", tx.GasPrice())
+	fmt.Println("tx gas limit:", tx.Gas())
+	fmt.Println("tx type:", tx.Type())
+	fmt.Println("tx nonce:", tx.Nonce())
+	fmt.Println("tx value:", tx.Value())
+	fmt.Println("tx data:", hex.EncodeToString(tx.Data()))
+}
+
+func TestDecodeRawTransactionHexEIP155(t *testing.T) {
+	// 0x4c552aa8b23fdfe7f28e1d3b69dd161f7983e1a3e6707400d263f35fc2794141
+	tx, err := DecodeRawTransactionHex(txEIP155)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("chain id:", tx.ChainId())
+	fmt.Println("tx hash:", tx.Hash().String())
+	fmt.Println("tx gas price:", tx.GasPrice())
+	fmt.Println("tx gas limit:", tx.Gas())
+	fmt.Println("tx type:", tx.Type())
+	fmt.Println("tx nonce:", tx.Nonce())
+	fmt.Println("tx value:", tx.Value())
+	fmt.Println("tx data:", hex.EncodeToString(tx.Data()))
 }
