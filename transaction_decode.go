@@ -23,6 +23,9 @@ func DecodeRawTransactionBytes(bs []byte) (*types.Transaction, *common.Address, 
 		if tx.Type() == 0 {
 			// eip155Signer
 			signer = types.NewEIP155Signer(tx.ChainId())
+		} else if tx.Type() == 1 {
+			// eip2930Signer
+			signer = types.NewEIP2930Signer(tx.ChainId())
 		} else if tx.Type() == 2 {
 			// londonSigner
 			signer = types.NewLondonSigner(tx.ChainId())
