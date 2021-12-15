@@ -21,8 +21,9 @@ func TestDecodeTxInputsBytes(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
+
 	fmt.Println("input function sig:", hex.EncodeToString(funcBs))
-	fmt.Println("input function data:", data)
+	fmt.Println("input function data:", TxInputDataToJsonStr(data))
 }
 
 func TestDecodeTxInputsHex(t *testing.T) {
@@ -32,5 +33,5 @@ func TestDecodeTxInputsHex(t *testing.T) {
 		return
 	}
 	fmt.Println("input function sig:", hex.EncodeToString(funcBs))
-	fmt.Println("input function data:", data)
+	fmt.Println("input function data:", TxInputDataToJsonStr(data))
 }
