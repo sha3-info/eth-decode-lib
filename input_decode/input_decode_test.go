@@ -1,4 +1,4 @@
-package eth_decode_lib
+package input_decode
 
 import (
 	"encoding/hex"

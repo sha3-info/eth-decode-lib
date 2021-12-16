@@ -1,4 +1,4 @@
-package eth_decode_lib
+package transaction_decode
 
 import (
 	"encoding/hex"
