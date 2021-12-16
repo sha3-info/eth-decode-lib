@@ -1,4 +1,4 @@
-module eth_decode_lib
+module github.com/sha3-info/eth-decode-lib
 
 go 1.14
 
